@@ -10,6 +10,8 @@
   "scripts": {
     "start": "tsx src/index.ts",
     "build": "tsc",
+    "pre-commit": "npm --prefix template run pre-commit && prettier --write src",
+    "prepare": "husky",
     "prepack": " cpy template/.gitignore . --rename=.gitignore.keep --dot"
   },
   "files": [
@@ -23,6 +25,8 @@
   },
   "devDependencies": {
     "cpy-cli": "^5.0.0",
+    "husky": "^9.1.4",
+    "prettier": "^3.3.3",
     "tsx": "^4.17.0",
     "typescript": "^5.5.4"
   }
