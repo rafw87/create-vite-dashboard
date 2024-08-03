@@ -1,0 +1,4 @@
+# Ignore everything recursively
+
+node_modules/
+dist/

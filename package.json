@@ -10,7 +10,9 @@
   },
   "scripts": {
     "start": "ts-node src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "pre-commit": "npm --prefix template run pre-commit",
+    "prepare": "husky"
   },
   "files": [
     "index.js",
@@ -22,6 +24,7 @@
     "glob": "^11.0.0"
   },
   "devDependencies": {
+    "husky": "^9.1.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   }
