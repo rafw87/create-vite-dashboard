@@ -1,0 +1,28 @@
+{
+  "name": "@rafw87/create-vite-dashboard",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "create-vite-dashboard": "index.js",
+    "ctpl": "index.js"
+  },
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc"
+  },
+  "files": [
+    "index.js",
+    "dist",
+    "templates"
+  ],
+  "dependencies": {
+    "@inquirer/prompts": "^5.3.7",
+    "glob": "^11.0.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}
