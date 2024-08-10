@@ -1,8 +1,17 @@
 {
   "name": "@rafw87/create-vite-dashboard",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Dashboard template (single page application) in React and Material UI, using Vite and Typescript",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rafw87/create-vite-dashboard"
+  },
+  "homepage": "https://github.com/rafw87/create-vite-dashboard",
+  "author": {
+    "name": "Rafał Witczak",
+    "email": "rafal.witczak87@gmail.com"
+  },
   "main": "index.js",
   "type": "module",
   "bin": {
