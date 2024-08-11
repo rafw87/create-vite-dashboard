@@ -25,7 +25,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm-${{ matrix.node-version }}'
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            template/package-lock.json
       - name: Prepare
         run: |
           git config --global user.email "example-user@example.com"
