@@ -123,7 +123,7 @@ async function commitFiles(targetDir: string) {
     private: isPrivate,
   });
   await runInstall(fullTargetDir);
-  await runPrettier(fullTargetDir);
+  // await runPrettier(fullTargetDir);
   await commitFiles(fullTargetDir);
   console.log(`\nFinished generating your project ${projectName}. Now you can run it:`);
   console.log(`$ cd ${targetDir}`);

@@ -5,7 +5,7 @@ import { Providers } from './Providers';
 export const App = () => {
   return (
     <Providers>
-      <RouterProvider router={router} test={1} />
+      <RouterProvider router={router} />
     </Providers>
   );
 };
