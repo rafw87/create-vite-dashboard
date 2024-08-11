@@ -30,11 +30,10 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-      - name: Install packed version
-        run: |
-          pack_filename=$(npm pack)
-          echo "Pack filename: $pack_filename"
-          npm install -g $pack_filename
+      - name: Pack to tgz
+        run: npm pack --pack-destination=${{ runner.temp }}
+      - name: Install globally from tgz
+        run: npm install -g ${{ runner.temp }}/rafw87-create-vite-dashboard-*.tgz
       - name: Run create script from installed version
         run: npx tsx scripts/test-execute.ts ${{ runner.temp }}/generated-dashboard
       - name: Lint generated dashboard
