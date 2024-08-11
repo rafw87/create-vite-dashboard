@@ -1,6 +1,6 @@
-import { RouterProvider } from 'react-router'
-import { router } from './pages/router'
-import { Providers } from './Providers'
+import { RouterProvider } from 'react-router';
+import { router } from './pages/router';
+import { Providers } from './Providers.tsx';
 
 export const App = () => {
   return (
