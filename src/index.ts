@@ -74,7 +74,7 @@ async function commitFiles(targetDir: string) {
 (async function () {
   const targetDir = argTargetDir ?? (await input({ message: 'Target dir:', required: true }));
 
-  const fullTargetDir = path.join(process.cwd(), targetDir);
+  const fullTargetDir = path.resolve(process.cwd(), targetDir);
   const sourceDir = path.resolve(fileURLToPath(import.meta.url), '../../template');
 
   const templateFiles = await getFiles(sourceDir);
