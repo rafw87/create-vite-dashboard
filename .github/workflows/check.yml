@@ -46,7 +46,7 @@ jobs:
       - name: Run create script from installed version
         run: npx tsx scripts/test-execute.ts ${{ runner.temp }}/generated-dashboard
       - name: Lint generated dashboard
-        run: npm run lint
+        run: npm run lint -- --max-warnings 0
         working-directory: ${{ runner.temp }}/generated-dashboard
       - name: Build generated dashboard
         run: npm run build
