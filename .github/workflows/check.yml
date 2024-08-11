@@ -31,7 +31,10 @@ jobs:
       - name: Build
         run: npm run build
       - name: Install packed version
-        run: npm install -g $(npm pack)
+        run: |
+          pack_filename=$(npm pack)
+          echo "Pack filename: $pack_filename"
+          npm install -g $pack_filename
       - name: Run create script from installed version
         run: npx tsx scripts/test-execute.ts ${{ runner.temp }}/generated-dashboard
       - name: Lint generated dashboard
