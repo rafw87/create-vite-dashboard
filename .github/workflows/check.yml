@@ -40,7 +40,9 @@ jobs:
       - name: Pack to tgz
         run: npm pack --pack-destination=${{ runner.temp }}
       - name: Install globally from tgz
-        run: npm install -g ${{ runner.temp }}/rafw87-create-vite-dashboard-*.tgz
+        run: |
+          npm uninstall -g @rafw87/create-vite-dashboard
+          npm install -g ${{ runner.temp }}/rafw87-create-vite-dashboard-*.tgz
       - name: Run create script from installed version
         run: npx tsx scripts/test-execute.ts ${{ runner.temp }}/generated-dashboard
       - name: Lint generated dashboard
