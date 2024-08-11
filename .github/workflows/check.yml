@@ -26,6 +26,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+      - name: Prepare
+        run: |
+          git config --global user.email "example-user@example.com"
+          git config --global user.name "Example User"
       - name: Install
         run: npm ci
       - name: Build
