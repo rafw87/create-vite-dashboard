@@ -1,8 +1,6 @@
 name: Node.js Publish
 
 on:
-  push:
-    branches: [ publish_action ]
   release:
     types: [created]
 
