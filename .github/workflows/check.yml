@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ master ]
   workflow_call:
+    inputs:
+      package_version:
+        required: false
+        type: string
 
 jobs:
   build:
@@ -34,12 +38,19 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+        if: ${{ inputs.package_version == null }}
       - name: Pack to tgz
         run: npm pack --pack-destination=${{ runner.temp }}
-      - name: Install globally from tgz
+        if: ${{ inputs.package_version == null }}
+      - name: Uninstall package if present
         run: |
           npm uninstall -g @rafw87/create-vite-dashboard
-          npm install -g ${{ runner.temp }}/rafw87-create-vite-dashboard-*.tgz
+      - name: Install globally from tgz
+        run: npm install -g ${{ runner.temp }}/rafw87-create-vite-dashboard-*.tgz
+        if: ${{ inputs.package_version == null }}
+      - name: Install globally from NPM
+        run: npm install -g @rafw87/create-vite-dashboard@${{ inputs.package_version }}
+        if: ${{ inputs.package_version != null }}
       - name: Run create script from installed version
         run: npx tsx scripts/test-execute.ts ${{ runner.temp }}/generated-dashboard
       - name: Lint generated dashboard
