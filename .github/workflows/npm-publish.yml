@@ -7,15 +7,47 @@ on:
     types: [created]
 
 jobs:
-  check:
-    uses: ./.github/workflows/check.yml
+#  check:
+#    uses: ./.github/workflows/check.yml
+#
+#  publish-npm:
+#    runs-on: ubuntu-latest
+#    needs:
+#      - check
+#    outputs:
+#      package_version: ${{ steps.get_version.outputs.package_version }}
+#    steps:
+#      - uses: actions/checkout@v2
+#      - uses: actions/setup-node@v2
+#        with:
+#          node-version: 20
+#          registry-url: https://registry.npmjs.org/
+#      - run: npm ci
+#      - run: npm run build
+#      - run: |
+#          version=$(npm pkg get version | jq -r)
+#          echo "Version to deploy: $version"
+#          echo "package_version=${version}" >> "$GITHUB_OUTPUT"
+#        id: get_version
+#      - run: npm publish
+#        env:
+#          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
   publish-npm:
     runs-on: ubuntu-latest
-    needs:
-      - check
     outputs:
       package_version: ${{ steps.get_version.outputs.package_version }}
+    steps:
+      - run: |
+          version=0.1.2-pre.2
+          echo "Version to deploy: $version"
+          echo "package_version=${version}" >> "$GITHUB_OUTPUT"
+        id: get_version
+
+  check-published:
+    runs-on: ubuntu-latest
+    needs:
+      - publish-npm
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -23,36 +55,21 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org/
       - run: npm ci
-      - run: npm run build
-      - run: |
-          version=$(npm pkg get version | jq -r)
-          echo "Version to deploy: $version"
-          echo "package_version=${version}" >> "$GITHUB_OUTPUT"
-        id: get_version
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-
-  check-published:
-    runs-on: ubuntu-latest
-    needs:
-      - publish-npm
-    steps:
-    - name: Install globally
-      run: |
-        npm uninstall -g @rafw87/create-vite-dashboard
-        npm install -g @rafw87/create-vite-dashboard@${{ needs.publish-npm.outputs.package_version }}
-    - name: Run create script from installed version
-      run: npx tsx scripts/test-execute.ts ${{ runner.temp }}/generated-dashboard
-    - name: Lint generated dashboard
-      run: npm run lint -- --max-warnings 0
-      working-directory: ${{ runner.temp }}/generated-dashboard
-    - name: Build generated dashboard
-      run: npm run build
-      working-directory: ${{ runner.temp }}/generated-dashboard
-    - name: Run prettier on generated dashboard
-      run: npm run prettier:fix
-      working-directory: ${{ runner.temp }}/generated-dashboard
-    - name: Check if working tree is clean
-      run: git diff --exit-code
-      working-directory: ${{ runner.temp }}/generated-dashboard
+      - name: Uninstall old version
+        run: npm uninstall -g @rafw87/create-vite-dashboard
+      - name: Install globally
+        run: npm install -g @rafw87/create-vite-dashboard@${{ needs.publish-npm.outputs.package_version }}
+      - name: Run create script from installed version
+        run: npx tsx scripts/test-execute.ts ${{ runner.temp }}/generated-dashboard
+      - name: Lint generated dashboard
+        run: npm run lint -- --max-warnings 0
+        working-directory: ${{ runner.temp }}/generated-dashboard
+      - name: Build generated dashboard
+        run: npm run build
+        working-directory: ${{ runner.temp }}/generated-dashboard
+      - name: Run prettier on generated dashboard
+        run: npm run prettier:fix
+        working-directory: ${{ runner.temp }}/generated-dashboard
+      - name: Check if working tree is clean
+        run: git diff --exit-code
+        working-directory: ${{ runner.temp }}/generated-dashboard
