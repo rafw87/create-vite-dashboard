@@ -7,42 +7,31 @@ on:
     types: [created]
 
 jobs:
-#  check:
-#    uses: ./.github/workflows/check.yml
-#
-#  publish-npm:
-#    runs-on: ubuntu-latest
-#    needs:
-#      - check
-#    outputs:
-#      package_version: ${{ steps.get_version.outputs.package_version }}
-#    steps:
-#      - uses: actions/checkout@v2
-#      - uses: actions/setup-node@v2
-#        with:
-#          node-version: 20
-#          registry-url: https://registry.npmjs.org/
-#      - run: npm ci
-#      - run: npm run build
-#      - run: |
-#          version=$(npm pkg get version | jq -r)
-#          echo "Version to deploy: $version"
-#          echo "package_version=${version}" >> "$GITHUB_OUTPUT"
-#        id: get_version
-#      - run: npm publish
-#        env:
-#          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+  check:
+    uses: ./.github/workflows/check.yml
 
   publish-npm:
     runs-on: ubuntu-latest
+    needs:
+      - check
     outputs:
       package_version: ${{ steps.get_version.outputs.package_version }}
     steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+      - run: npm ci
+      - run: npm run build
       - run: |
-          version=0.1.2-pre.2
+          version=$(npm pkg get version | jq -r)
           echo "Version to deploy: $version"
           echo "package_version=${version}" >> "$GITHUB_OUTPUT"
         id: get_version
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
   check-published:
     needs:

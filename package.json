@@ -1,6 +1,6 @@
 {
   "name": "@rafw87/create-vite-dashboard",
-  "version": "0.1.2-pre.2",
+  "version": "0.1.2-pre.3",
   "description": "Dashboard template (single page application) in React and Material UI, using Vite and Typescript",
   "license": "MIT",
   "repository": {
